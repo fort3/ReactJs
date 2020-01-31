@@ -1,0 +1,88 @@
+const place = ` # Hello react (a header)
+## Hi there (sub header)
+### See below texts for more:
+
+This is a [LINK](https://www.facebook.com)
+
+This is an inline code \`console.log('Hey there!');\`
+
+\`\`\` 
+//And this is a multiline code
+
+const multi = true;
+
+if(multi === false){
+  return console.log('Wrong code bruh!');
+}else{
+  return console.log('You got it my gee!');
+}
+\`\`\`
+
+>Don't forget block quotes!
+
+Then you have unordered lists that make things a bit easier to understand like the following:
+- first
+- second
+- third
+
+or like the following ordered list that display items in order:
+1. first
+2. second.
+3. third.
+
+We can also 
+- make text **Bold** or
+- embed an image lest we forget.
+
+![Create-React Dev Image](https://i.udemycdn.com/course/750x422/1362070_b9a1_2.jpg)
+`;
+marked.setOptions({
+ breaks: true
+});
+const display = new marked.Renderer();
+
+const Edit = (props) => {
+  return (
+    <textarea id="editor" value = {props.markInput} onChange={props.onChange}/>
+  )
+};
+
+const Prev = (props) => {
+  return(
+    <div id="preview" dangerouslySetInnerHTML = {{__html: marked(props.markInput, {display: display})}}/>
+  )
+};
+
+class MarkPreviewer extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      markInput: place,
+      maxim: '',
+      minim: ''
+    }
+    this.handleChange = this.handleChange.bind(this);
+  }
+  
+  handleChange(event){
+    this.setState({
+      markInput: event.target.value
+    })
+  }
+  render(){
+    return(
+      <div className = "container-fluid">
+        <h1 className="title"><i className="fa fa-pen"></i> My React Markdown Previewer !</h1><hr/>
+        <div className = "editor_view">
+          <nav className="editNav"><i className="fas fa-edit"></i> Editor</nav>
+          <Edit markInput = {this.state.markInput} onChange = {this.handleChange}/>
+        </div>
+        <div className = "prev_view">
+          <nav className="prevNav"><i className="fas fa-file-alt"></i> Preview</nav>
+          <Prev markInput = {this.state.markInput}/>
+        </div>
+        </div>
+    )
+  }
+}
+ReactDOM.render(<MarkPreviewer/>, document.getElementById('root'));
